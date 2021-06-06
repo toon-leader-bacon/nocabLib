@@ -1,0 +1,3 @@
+[submodule "submodules/LightJson"]
+	path = submodules/LightJson
+	url = git@github.com:MarcosLopezC/LightJson.git
