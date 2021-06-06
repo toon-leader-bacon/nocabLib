@@ -11,11 +11,13 @@ using UnityEngine;
  * fails.
  *
  */
-public static class CentralRegistry {
+public static class CentralRegistry
+{
 
   private static Dictionary<string, object> centralDictionary = new Dictionary<string, object>();
 
-  public static bool containsNocabName(string targetNocabName) {
+  public static bool containsNocabName(string targetNocabName)
+  {
     /**
      * Returns true if the provided targetNocabName is an entry in the central
      * registry. False otherwise.
@@ -23,14 +25,16 @@ public static class CentralRegistry {
     return centralDictionary.ContainsKey(targetNocabName);
   }
 
-  public static bool tryRegister(string newObjNocabName, object newObj) {
+  public static bool tryRegister(string newObjNocabName, object newObj)
+  {
     /**
      * Attempts to register the provided newObject into the provided newObjNocabName slot.
      * If the provided name is not unique (in other words, if the provided name already
      * has an object associated with it) then false will be returned and an error will be
      * logged.
      */
-    if (containsNocabName(newObjNocabName)) {
+    if (containsNocabName(newObjNocabName))
+    {
       string error = "CentralRegistry is trying to register an object but it's " +
         $"NocabName has already been registered!: Name: {newObjNocabName}";
       Debug.LogError(error);
@@ -41,7 +45,8 @@ public static class CentralRegistry {
     return true;
   }
 
-  public static bool tryDeregister(string targetNocabName) {
+  public static bool tryDeregister(string targetNocabName)
+  {
     /**
      * Attempts to remove an object from the central registry. This function should
      * be called whenever an element in the registry is "killed" or otherwise
@@ -50,7 +55,8 @@ public static class CentralRegistry {
      * Returns true if the remove operation was succesfull and the object removed.
      * False otherwise. False may imply the provided name could not be found.
      */
-    if ( ! containsNocabName(targetNocabName)) {
+    if (!containsNocabName(targetNocabName))
+    {
       string error = "CentralRegistry is trying to De-Register an object, but it's " +
         $"NocabName is not registered! Name: {targetNocabName}";
       Debug.LogError(error);
@@ -59,8 +65,9 @@ public static class CentralRegistry {
     return centralDictionary.Remove(targetNocabName);
   }
 
-  public static object getObject(string nocabName) {
-    if ( ! containsNocabName(nocabName)) { return null; }
+  public static object getObject(string nocabName)
+  {
+    if (!containsNocabName(nocabName)) { return null; }
     return centralDictionary[nocabName];
   }
 
