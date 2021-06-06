@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LazyLoader<T> : INocabNameable {
+public class LazyLoader<T> : INocabNameable
+{
   /**
    * A LazyLoader is a wrapper class for a NocabNameable object.
    * In short, a LazyLoader holds a NocabName uuid, and uses it
@@ -26,18 +27,21 @@ public class LazyLoader<T> : INocabNameable {
   private T targetObj = default(T); // Use this.setTargetObj(...) to modify!
   private bool targetAcquired = false; // Has this.targetObj been loaded
 
-  public LazyLoader(string NocabNameUUID) {
+  public LazyLoader(string NocabNameUUID)
+  {
     this.NocabNameUUID = NocabNameUUID;
   }
 
-  public bool isTargetRegistered() {
+  public bool isTargetRegistered()
+  {
     /**
      * Check if the NocabNameable this LazyLoader targets is loaded in the CentralRegistry.
     **/
     return CentralRegistry.containsNocabName(this.NocabNameUUID);
   }
 
-  public T getObjectOrError() {
+  public T getObjectOrError()
+  {
     /**
      * Ping the CentralRegistry and attempt to get the target object.
      * Errors will be thrown if:
@@ -49,7 +53,8 @@ public class LazyLoader<T> : INocabNameable {
     **/
     if (this.targetAcquired) { return this.targetObj; }
 
-    if ( ! isTargetRegistered()) {
+    if (!isTargetRegistered())
+    {
       string errorMsg = "LazyLoader attempted to pull an object out of the CentralRegistry. " +
       $"But the target didn't exist! Target NocabNameUUID: \"{NocabNameUUID}\"";
       Debug.LogError(errorMsg);
@@ -60,17 +65,20 @@ public class LazyLoader<T> : INocabNameable {
     return this.setTargetObj(objFromCR); // Will error if objFromCR is not type T
   }
 
-  private T setTargetObj(object obj) {
+  private T setTargetObj(object obj)
+  {
     /**
      * Internal helper function to safely cast and save results from the CentralRegistry.
     **/
     // Someone could register a null to CentralRegistry. That's valid, but weird...
     if (obj == null) { this.targetObj = default(T); } // Default of refence types is null
-    else {
+    else
+    {
       // Else, process the results from the CentralRegistry.
       // Ensure it's the target type T.
       try { this.targetObj = (T)obj; }
-      catch(System.InvalidCastException e) {
+      catch (System.InvalidCastException e)
+      {
         string errorMsg = "LazyLoder attempted to cast the result target objcet " +
         "(Received from the CentralRegistry) into the target template type. NocabNameUUID: " +
         $"\"{this.NocabNameUUID}\". InvalidCastException: {e.Message}";
@@ -83,12 +91,15 @@ public class LazyLoader<T> : INocabNameable {
     return this.targetObj;
   }
 
-  public string getNocabName() {
+  public string getNocabName()
+  {
     return this.NocabNameUUID;
   }
 
-  public bool deregister() {
-    if ( ! CentralRegistry.tryDeregister(NocabNameUUID)) {
+  public bool deregister()
+  {
+    if (!CentralRegistry.tryDeregister(NocabNameUUID))
+    {
       string error = "Attempted to de-register a NocabNameable from the " +
         $"Central Registry, but it failed. Attempted to use this name as UUID: {NocabNameUUID}";
       throw new System.ArgumentOutOfRangeException(error);

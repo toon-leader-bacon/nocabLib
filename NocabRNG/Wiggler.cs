@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public struct Wiggler {
-	/**
+public struct Wiggler
+{
+  /**
 	 * A utility object that helps to "wiggle" a series of number to make them slightly more
 	 * random.
 	 * Providing the length of the series will ensure that the sum of the number series dosen't
@@ -15,14 +16,15 @@ public struct Wiggler {
 	 *
 	 */
 
-	public readonly int lengthOfSeries; // How many numbers are in the series?
-	public readonly int maxDelta;       // The maximum distance a number can be wiggled
+  public readonly int lengthOfSeries; // How many numbers are in the series?
+  public readonly int maxDelta;       // The maximum distance a number can be wiggled
 
-	private int needle;         // The current delta of the series
-	private int returnedCount;  // How many numbers have been returned so far
+  private int needle;         // The current delta of the series
+  private int returnedCount;  // How many numbers have been returned so far
 
-	public Wiggler(int lengthOfSeries, int maxDelta) {
-		/**
+  public Wiggler(int lengthOfSeries, int maxDelta)
+  {
+    /**
 		 * Builds a utility that can statefully wiggle a list of numbers.
 		 * Consider using the Wiggler.wiggle(...) static function.
 		 *
@@ -31,15 +33,16 @@ public struct Wiggler {
 		 * param lengthOfSeries: How many numbers are expected to be passed into this wiggler.
 		 * param maxDelta: How big the change of to a single number can be
 		 */
-		this.lengthOfSeries = lengthOfSeries;
-		this.maxDelta = maxDelta;
+    this.lengthOfSeries = lengthOfSeries;
+    this.maxDelta = maxDelta;
 
-		this.needle = 0;
-		this.returnedCount = 0;
-	}
+    this.needle = 0;
+    this.returnedCount = 0;
+  }
 
-	public int wiggle(int value, NocabRNG rng) {
-		/**
+  public int wiggle(int value, NocabRNG rng)
+  {
+    /**
 		 * A statefull version of the other wiggle fucntion.
 		 *
 		 * Wiggles a list of numbers. The sum of the number will not change.
@@ -54,21 +57,23 @@ public struct Wiggler {
 		 * be modified by subtracting this change so far to ensure the total delta is zero.
 		 */
 
-		if (this.returnedCount == lengthOfSeries - 1) {
-			this.returnedCount = 0;
-			return value - needle;
-		}
+    if (this.returnedCount == lengthOfSeries - 1)
+    {
+      this.returnedCount = 0;
+      return value - needle;
+    }
 
-		int minRange = Mathf.Max(-maxDelta, -maxDelta - needle);
-		int maxRange = Mathf.Min(maxDelta, maxDelta - needle);
-		int wiggle = rng.generateInt(minRange, maxRange);
-		needle += wiggle;
-		returnedCount++;
-		return value + wiggle;
-	}
+    int minRange = Mathf.Max(-maxDelta, -maxDelta - needle);
+    int maxRange = Mathf.Min(maxDelta, maxDelta - needle);
+    int wiggle = rng.generateInt(minRange, maxRange);
+    needle += wiggle;
+    returnedCount++;
+    return value + wiggle;
+  }
 
-	public static void wiggle(ref List<int> numbers, int maxDelta, NocabRNG rng) {
-		/**
+  public static void wiggle(ref List<int> numbers, int maxDelta, NocabRNG rng)
+  {
+    /**
 		 * A static function version of the other wiggle function.
 		 *
 		 * Wiggles a list of numbers. The sum of the number will not change.
@@ -82,17 +87,18 @@ public struct Wiggler {
 		 * change never becomes larger than maxDelta. The last number in the list will
 		 * be modified by subtracting this change so far to ensure the total delta is zero.
 		 */
-		int _needle = 0;
-		for (int i = 0; i < numbers.Count - 1; i++) {
-			// itterate through all the numbers except the last one
+    int _needle = 0;
+    for (int i = 0; i < numbers.Count - 1; i++)
+    {
+      // itterate through all the numbers except the last one
 
-			int minRange = Mathf.Max(-maxDelta, -maxDelta - _needle);
-			int maxRange = Mathf.Min(maxDelta, maxDelta - _needle);
-			int wiggle = rng.generateInt(minRange, maxRange);
-			_needle += wiggle;
-			// Debug.Log($"needle {_needle},  range [{minRange},{maxRange}],  wiggle {wiggle}\n");
-			numbers[i] = numbers[i] + wiggle;
-		}
-		numbers[numbers.Count - 1] += -_needle;
-	}
+      int minRange = Mathf.Max(-maxDelta, -maxDelta - _needle);
+      int maxRange = Mathf.Min(maxDelta, maxDelta - _needle);
+      int wiggle = rng.generateInt(minRange, maxRange);
+      _needle += wiggle;
+      // Debug.Log($"needle {_needle},  range [{minRange},{maxRange}],  wiggle {wiggle}\n");
+      numbers[i] = numbers[i] + wiggle;
+    }
+    numbers[numbers.Count - 1] += -_needle;
+  }
 }

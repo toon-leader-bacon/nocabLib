@@ -1,4 +1,5 @@
-﻿public interface INocabNameable {
+﻿public interface INocabNameable
+{
   /*
    * Once a NocabNameable has been named, it can never change.
    * The NocabName is (read "should be") constant even through
@@ -31,22 +32,27 @@
 
 }
 
-public class NocabNameable : INocabNameable{
+public class NocabNameable : INocabNameable
+{
 
   private readonly string NocabName;
 
-  public NocabNameable(object objectToRegister) {
+  public NocabNameable(object objectToRegister)
+  {
     this.NocabName = NocabRNG.defaultRNG.generateUUID();
     this.register(objectToRegister);
   }
 
-  public NocabNameable(object objectToRegister, string name) {
+  public NocabNameable(object objectToRegister, string name)
+  {
     this.NocabName = name;
     this.register(objectToRegister);
   }
 
-  public bool register(object objToRegister) {
-    if ( ! CentralRegistry.tryRegister(NocabName, objToRegister)) {
+  public bool register(object objToRegister)
+  {
+    if (!CentralRegistry.tryRegister(NocabName, objToRegister))
+    {
       string error = "Attempted to register a NocabNameable to the " +
         $"CentralRegistry, but it failed. Attempted to use this name as UUID: {NocabName}";
       throw new System.ArgumentOutOfRangeException(error);
@@ -54,8 +60,10 @@ public class NocabNameable : INocabNameable{
     return true;
   }
 
-  public bool deregister() {
-    if ( ! CentralRegistry.tryDeregister(NocabName)) {
+  public bool deregister()
+  {
+    if (!CentralRegistry.tryDeregister(NocabName))
+    {
       string error = "Attempted to de-register a NocabNameable from the " +
         $"Central Registry, but it failed. Attempted to use this name as UUID: {NocabName}";
       throw new System.ArgumentOutOfRangeException(error);
