@@ -87,4 +87,17 @@ public class DictionarySet<TKey, TValue> : Dictionary<TKey, HashSet<TValue>>
     }
   }
 
+  public void merge(DictionarySet<TKey, TValue> sourceToMergeIn) {
+    /**
+     * Take the provided dictionarySet and add all the elements into this
+     * DictionarySet. 
+     * The reference to the elements will be coppied, so modifications to
+     * the elements in the source DictionarySet will also modify the elements
+     * in this DictionarySet.
+     */
+    foreach(KeyValuePair<TKey, HashSet<TValue>> kvp in sourceToMergeIn) {
+      this.Add(kvp.Key, kvp.Value);
+    }
+  }
+
 }
