@@ -18,8 +18,15 @@ public class DictionarySet<TKey, TValue> : Dictionary<TKey, HashSet<TValue>>
 
   public new void Add(TKey key, HashSet<TValue> values)
   {
-    // Hide the base.Add(key, value) function to instead merge the given values into the 
-    // previously existing values (if it exists).
+    /**
+     * WARNING: If the provided values is an empty list then it WILL be added to this
+     * dictionary. Typically, empty hash sets are pruned, but they may NOT be pruned 
+     * properly if added via this method.
+     * 
+     * Hide the base.Add(key, value) function to instead merge the given values into the
+     * previously existing values (if it exists).
+     */
+
     if (key == null) { throw new ArgumentNullException("Key is null"); }
     if (!this.ContainsKey(key)) { base.Add(key, values); }
     else { this[key].UnionWith(values); }
@@ -56,6 +63,28 @@ public class DictionarySet<TKey, TValue> : Dictionary<TKey, HashSet<TValue>>
 
     if (this.ContainsKey(key)) { return this[key]; }
     else { return new HashSet<TValue>(); }
+  }
+
+  public void prune()
+  {
+    /**
+     * @brief prune() will search through the entire dictionary set and look for
+     * Key Value Pairs that contain an empty HashSet. Once discovered, the entire
+     * entry will be removed. 
+     * 
+     * The only way that an empty HashSet could be discovered, is if one was inserted
+     * via the Add(TKey key, HashSet<TValue> values) function. Otherwise, this data 
+     * structure should be able to clean up after itself when removing the last element
+     * in a set.
+     */
+    foreach (KeyValuePair<TKey, HashSet<TValue>> kvp in this)
+    {
+      if (kvp.Value.Count == 0)
+      {
+        // If an empty set is found
+        this.Remove(kvp.Key);
+      }
+    }
   }
 
 }
