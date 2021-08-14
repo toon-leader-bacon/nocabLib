@@ -57,7 +57,7 @@ public class DictionarySet<TKey, TValue> : Dictionary<TKey, HashSet<TValue>>
   public HashSet<TValue> safeGet(TKey key)
   {
     /**
-     * If the provided key is contained, the matching pair HashSet is returnd.
+     * If the provided key is contained, the matching pair HashSet is returned.
      * Otherwise, an empty hashset is returned.
      */
 
@@ -87,7 +87,8 @@ public class DictionarySet<TKey, TValue> : Dictionary<TKey, HashSet<TValue>>
     }
   }
 
-  public void merge(DictionarySet<TKey, TValue> sourceToMergeIn) {
+  public void merge(DictionarySet<TKey, TValue> sourceToMergeIn)
+  {
     /**
      * Take the provided dictionarySet and add all the elements into this
      * DictionarySet. 
@@ -95,7 +96,8 @@ public class DictionarySet<TKey, TValue> : Dictionary<TKey, HashSet<TValue>>
      * the elements in the source DictionarySet will also modify the elements
      * in this DictionarySet.
      */
-    foreach(KeyValuePair<TKey, HashSet<TValue>> kvp in sourceToMergeIn) {
+    foreach (KeyValuePair<TKey, HashSet<TValue>> kvp in sourceToMergeIn)
+    {
       this.Add(kvp.Key, kvp.Value);
     }
   }
