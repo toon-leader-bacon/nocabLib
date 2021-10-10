@@ -2,6 +2,7 @@
 # For this generic c# lib, ignore all unity meta files
 *.meta
 /[Aa]rchive/
+.vscode/
 
 
 ####################

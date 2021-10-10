@@ -1,19 +1,18 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
 
 public struct Wiggler
 {
   /**
 	 * A utility object that helps to "wiggle" a series of number to make them slightly more
 	 * random.
-	 * Providing the length of the series will ensure that the sum of the number series dosen't
+	 * Providing the length of the series will ensure that the sum of the number series doesn't
 	 * change. Consier the simple example list of number [5,5,5,5]. The total sum is 20, and
 	 * after wiggling it produces the series [3, 6, 7, 4] the total sum is still 20.
 	 *
-	 * If the provided lengthOfSeries is less than or equal to zero then there is no guarentee
-	 * that the sum will remain constant. The sum will stay close to the origional sum, but
-	 * no guarentee that it will re-converge to the exact sum.
-	 *
+	 * If the provided lengthOfSeries is less than or equal to zero then there is no guarantee
+	 * that the sum will remain constant. The sum will stay close to the original sum, but
+	 * no guarantee that it will re-converge to the exact sum.
 	 */
 
   public readonly int lengthOfSeries; // How many numbers are in the series?
@@ -43,12 +42,12 @@ public struct Wiggler
   public int wiggle(int value, NocabRNG rng)
   {
     /**
-		 * A statefull version of the other wiggle fucntion.
+		 * A statefull version of the other wiggle function.
 		 *
 		 * Wiggles a list of numbers. The sum of the number will not change.
 		 * The maximum change that any one number can have is maxDelta.
 		 *
-		 * NOTE: because the sum dosen't change, if the list only have 1 element in it than
+		 * NOTE: because the sum doesn't change, if the list only have 1 element in it than
 		 * there will be no change.
 		 *
 		 * For future developers poking in the code, the idea is this:
@@ -63,8 +62,8 @@ public struct Wiggler
       return value - needle;
     }
 
-    int minRange = Mathf.Max(-maxDelta, -maxDelta - needle);
-    int maxRange = Mathf.Min(maxDelta, maxDelta - needle);
+    int minRange = Math.Max(-maxDelta, -maxDelta - needle);
+    int maxRange = Math.Min(maxDelta, maxDelta - needle);
     int wiggle = rng.generateInt(minRange, maxRange);
     needle += wiggle;
     returnedCount++;
@@ -79,7 +78,7 @@ public struct Wiggler
 		 * Wiggles a list of numbers. The sum of the number will not change.
 		 * The maximum change that any one number can have is maxDelta.
 		 *
-		 * NOTE: because the sum dosen't change, if the list only have 1 element in it than
+		 * NOTE: because the sum doesn't change, if the list only have 1 element in it than
 		 * there will be no change.
 		 *
 		 * For future developers poking in the code, the idea is this:
@@ -90,10 +89,10 @@ public struct Wiggler
     int _needle = 0;
     for (int i = 0; i < numbers.Count - 1; i++)
     {
-      // itterate through all the numbers except the last one
+      // iterate through all the numbers except the last one
 
-      int minRange = Mathf.Max(-maxDelta, -maxDelta - _needle);
-      int maxRange = Mathf.Min(maxDelta, maxDelta - _needle);
+      int minRange = Math.Max(-maxDelta, -maxDelta - _needle);
+      int maxRange = Math.Min(maxDelta, maxDelta - _needle);
       int wiggle = rng.generateInt(minRange, maxRange);
       _needle += wiggle;
       // Debug.Log($"needle {_needle},  range [{minRange},{maxRange}],  wiggle {wiggle}\n");

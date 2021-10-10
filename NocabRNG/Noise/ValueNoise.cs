@@ -1,8 +1,7 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
-using System;
 using LightJson;
+using System.Numerics;
 
 public class ValueNoise : INoise
 {
@@ -55,15 +54,13 @@ public class ValueNoise : INoise
   }
   public ValueNoise() : this(NocabRNG.defaultRNG) { }
 
-  public float noise(float x)
-  {
+  public float noise(float x) {
     Corners cell = extractCorners(x, 0.0f);
 
     // The coord (-0.1, y) needs to be clamped into the Lerp range of [0,1]
     // Additionally, the x = -0.1 is on the far right of the cell => it should actually be 0.9
-    float clampedXFloat = (x > 0) ? (x - Mathf.Floor(x)) : (x - Mathf.Ceil(x));
-    float result = Mathf.Lerp(cell.topLeft, cell.topRight, clampedXFloat);
-
+    float clampedXFloat = (x > 0) ? (x - MathF.Floor(x)) : (x - MathF.Ceiling(x));
+    float result = NocabMathUtility.lerp_exact(cell.topLeft, cell.topRight, clampedXFloat);
     return result;
   }
 
@@ -77,16 +74,16 @@ public class ValueNoise : INoise
 
     // The coord (-0.1, y) needs to be clamped into the Lerp range of [0,1]
     // Additionally, the x = -0.1 is on the far right of the cell => it should actually be 0.9
-    float clampedXFloat = (x > 0) ? (x - Mathf.Floor(x)) : (x - Mathf.Ceil(x));
-    float clampedYFloat = (y > 0) ? (y - Mathf.Floor(y)) : (y - Mathf.Ceil(y));
+    float clampedXFloat = (x > 0) ? (x - MathF.Floor(x)) : (x - MathF.Ceiling(x));
+    float clampedYFloat = (y > 0) ? (y - MathF.Floor(y)) : (y - MathF.Ceiling(y));
 
-    float topRep = Mathf.Lerp(cell.topLeft, cell.topRight, clampedXFloat);
-    float botRep = Mathf.Lerp(cell.bottomLeft, cell.bottomRight, clampedXFloat);
-    float result = Mathf.Lerp(topRep, botRep, clampedYFloat);
+    float topRep = NocabMathUtility.lerp_exact(cell.topLeft, cell.topRight, clampedXFloat);
+    float botRep = NocabMathUtility.lerp_exact(cell.bottomLeft, cell.bottomRight, clampedXFloat);
+    float result = NocabMathUtility.lerp_exact(topRep, botRep, clampedYFloat);
     return result;
   }
 
-  public float noise(Vector2 point) { return this.noise(point.x, point.y); }
+  public float noise(Vector2 point) { return this.noise(point.X, point.Y); }
 
 
   #region Private Utility
@@ -95,10 +92,10 @@ public class ValueNoise : INoise
   {
     // Finds the closest 4 nodes to the given point and packages them in the Corners struct
     return new Corners(
-      topLeft: extractNode(new HashablePointInt(Mathf.FloorToInt(x), Mathf.FloorToInt(y))),
-      topRight: extractNode(new HashablePointInt(Mathf.CeilToInt(x), Mathf.FloorToInt(y))),
-      bottomLeft: extractNode(new HashablePointInt(Mathf.FloorToInt(x), Mathf.CeilToInt(y))),
-      bottomRight: extractNode(new HashablePointInt(Mathf.CeilToInt(x), Mathf.CeilToInt(y)))
+      topLeft:     extractNode(new HashablePointInt((int)MathF.Floor(x),   (int)MathF.Floor(y))),
+      topRight:    extractNode(new HashablePointInt((int)MathF.Ceiling(x), (int)MathF.Floor(y))),
+      bottomLeft:  extractNode(new HashablePointInt((int)MathF.Floor(x),   (int)MathF.Ceiling(y))),
+      bottomRight: extractNode(new HashablePointInt((int)MathF.Ceiling(x), (int)MathF.Ceiling(y)))
     );
   }
 

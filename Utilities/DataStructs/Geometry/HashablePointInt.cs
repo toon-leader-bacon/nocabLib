@@ -5,7 +5,7 @@ public struct HashablePointInt {
 	/**
 	 * A helper struct that represents a point.
 	 * Two points with the same (x,y) will generate the same 
-	 * hash. Each hash is distnict from other (x,y) combos.
+	 * hash. Each hash is distinct from other (x,y) combos.
 	 */
 	public readonly int x;
 	public readonly int y;

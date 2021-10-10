@@ -1,12 +1,11 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class DropTable<T>
 {
   /**
    * The DropTable<T> class encapsulates a series of possible options. One option can be  selected
-   * at random from the list of options. Each option in the list has a variable probablity of being
+   * at random from the list of options. Each option in the list has a variable probability of being
    * selected.
    */
 
@@ -38,7 +37,7 @@ public class DropTable<T>
   private T pullElement(float f)
   {
     /**
-     * Given a value between [0, totalSum) zero inclusinve totalSum exclusive, return the
+     * Given a value between [0, totalSum) zero inclusive totalSum exclusive, return the
      * associated element.
      */
     foreach (KeyValuePair<float, T> kvp in options)
@@ -53,18 +52,17 @@ public class DropTable<T>
 
   #endregion
 
-  #region Utilites
+  #region Utilities
 
   private static float calculateSum(List<KeyValuePair<float, T>> options)
   {
     // Calculate the sum of all the keys in the provided list
     float result = 0.0f;
-    foreach (KeyValuePair<float, T> option in options)
-    {
-      result += Mathf.Abs(option.Key);
+    foreach (KeyValuePair<float, T> option in options) {
+      result += MathF.Abs(option.Key);
     }
     return result;
   }
 
-  #endregion
+  #endregion Utilities
 }

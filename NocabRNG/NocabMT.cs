@@ -5,7 +5,7 @@ using System;
 public class NocabMT : JsonConvertible
 {
   /**
-	 * Mersenne Twister, following the psudo code from Wikipedia. 
+	 * Mersenne Twister, following the pseudo code from Wikipedia. 
 	 * https://en.wikipedia.org/wiki/Mersenne_Twister
 	 * 
 	 * Generates an unsigned int (32 bit) in the range between [0, (2^32) - 1] Or [0, 4,294,967,295]
@@ -16,7 +16,7 @@ public class NocabMT : JsonConvertible
   public const float MAX_POSSIBLE_VALUE_PLUS_ONE = 4294967296.0f; // (2^32). Float is required because uint overflow 
 
 
-  private const int wordLengh = 32;    // number of bits
+  private const int wordLength = 32;    // number of bits
   private const uint stateLength = 624; // degree of recurrence
   private const uint m = 397; // middle word, an offset used in defining the series X.  1 <= m < n
   private const uint r = 31;  //seperation  point of one word, # bits of lower bitmask.  0 <= r <= w-1
@@ -57,7 +57,7 @@ public class NocabMT : JsonConvertible
     mtState[0] = seed;
     for (int i = 1; i < stateLength - 1; i++)
     {
-      mtState[i] = (uint)(F32 * (mtState[i - 1] ^ (mtState[i - 1] >> (wordLengh - 2))) + i);
+      mtState[i] = (uint)(F32 * (mtState[i - 1] ^ (mtState[i - 1] >> (wordLength - 2))) + i);
     }
   }
 

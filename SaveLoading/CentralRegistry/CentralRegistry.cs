@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 /**
  * The CentralRegistry is a system to allow for objects to easily lookup other object
@@ -35,9 +33,9 @@ public static class CentralRegistry
      */
     if (containsNocabName(newObjNocabName))
     {
-      string error = "CentralRegistry is trying to register an object but it's " +
+      string errMsg = "CentralRegistry is trying to register an object but it's " +
         $"NocabName has already been registered!: Name: {newObjNocabName}";
-      Debug.LogError(error);
+      System.Console.WriteLine(errMsg);
       return false;
     }
 
@@ -50,16 +48,16 @@ public static class CentralRegistry
     /**
      * Attempts to remove an object from the central registry. This function should
      * be called whenever an element in the registry is "killed" or otherwise
-     * deleted. The refrence to that object will be removed and the name freed up.
+     * deleted. The reference to that object will be removed and the name freed up.
      *
-     * Returns true if the remove operation was succesfull and the object removed.
+     * Returns true if the remove operation was successfull and the object removed.
      * False otherwise. False may imply the provided name could not be found.
      */
     if (!containsNocabName(targetNocabName))
     {
-      string error = "CentralRegistry is trying to De-Register an object, but it's " +
+      string errMsg = "CentralRegistry is trying to De-Register an object, but it's " +
         $"NocabName is not registered! Name: {targetNocabName}";
-      Debug.LogError(error);
+      System.Console.WriteLine(errMsg);
       return false;
     }
     return centralDictionary.Remove(targetNocabName);

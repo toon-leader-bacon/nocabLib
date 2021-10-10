@@ -5,10 +5,10 @@
    * The NocabName is (read "should be") constant even through
    * save and load events.
    *
-   * If a Nocabnameable entity/ object "dies" or needs to be
+   * If a NocabNameable entity/ object "dies" or needs to be
    * destroyed the deregister() function must be called (if not,
    * then memory leaks will happen because at least the CentralRegistry
-   * will hold one refrence to this INocabNameable)
+   * will hold one reference to this INocabNameable)
    *
    * Nocab Namable objects are automaticall registered in the
    * CentralRegistry at creation time.
@@ -17,11 +17,11 @@
   string getNocabName();
 
   /**
-   * Remove the refrence to this NocabNamable from the central Registry.
-   * Should only be called when the Nocabnamable entity/ obj "dies" or
-   * needs to be destoryed.
+   * Remove the reference to this NocabNamable from the central Registry.
+   * Should only be called when the NocabNamable entity/ obj "dies" or
+   * needs to be destroyed.
    *
-   * Generally, an error may be thrown if the CentralRegistry dosen't have
+   * Generally, an error may be thrown if the CentralRegistry doesn't have
    * this NocabNameable registered internally. In otherwords, this method
    * MAY not be a no-op. In general, it will return true or throw an error.
    * But other implimentations of this interface may have different behavior.

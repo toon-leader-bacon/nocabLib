@@ -1,7 +1,8 @@
-﻿using LightJson;
+﻿using System;
+using LightJson;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Numerics;
 
 public class SimplexNoise : INoise
 {
@@ -67,7 +68,7 @@ public class SimplexNoise : INoise
 		 * A 1D noise generator that produces values in the range [0, 1]
 		 */
 
-    int floor = Mathf.FloorToInt(xin);
+    int floor = (int)Math.Floor(xin);
     int ceil = floor + 1;
     float upFromFloor = xin - floor;
     float downFromCeil = upFromFloor - 1.0f;
@@ -91,8 +92,8 @@ public class SimplexNoise : INoise
     float skew = (xin + yin) * SkewConstant2d;
     float xSkewed = xin + skew;
     float ySkewed = yin + skew;
-    int targetTriangleI = Mathf.FloorToInt(xSkewed);
-    int targetTriangleJ = Mathf.FloorToInt(ySkewed);
+    int targetTriangleI = (int)Math.Floor(xSkewed);
+    int targetTriangleJ = (int)Math.Floor(ySkewed);
 
     // Find (x0, y0) as distance from simplex cell origin
     float unskew = (targetTriangleI + targetTriangleJ) * UnskewConstant2d;
@@ -139,7 +140,7 @@ public class SimplexNoise : INoise
     return (20.0f * (n0 + n1 + n2)) + 0.5f;
   }
 
-  public float noise(Vector2 point) { return noise(point.x, point.y); }
+  public float noise(Vector2 point) { return noise(point.X, point.Y); }
 
 
   #region Utility/ Helper functions

@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System;
-using UnityEngine;
-using LightJson;
 
 public class DictionarySet<TKey, TValue> : Dictionary<TKey, HashSet<TValue>>
 {
@@ -45,7 +42,7 @@ public class DictionarySet<TKey, TValue> : Dictionary<TKey, HashSet<TValue>>
       // If the value was not present in the hash set
       return false;
     }
-    // Else the value was previously present, but has been sucesfully removed
+    // Else the value was previously present, but has been successfully removed
     if (this[key].Count == 0)
     {
       // If the entry is now empty

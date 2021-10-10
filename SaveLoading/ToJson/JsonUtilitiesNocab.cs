@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using LightJson;
+﻿using LightJson;
 
 public static class JsonUtilitiesNocab
 {
@@ -26,7 +23,7 @@ public static class JsonUtilitiesNocab
   {
     if (!validateTypeKey(jo))
     {
-      throw new InvalidLoadType("Invalid JsonObject. The provided JsonObject does NOT contain the key \"Type\" (capitilization is important).");
+      throw new InvalidLoadType("Invalid JsonObject. The provided JsonObject does NOT contain the key \"Type\" (capitalization is important).");
     }
     if (!validateExpectedType(jo, expectedType))
     {
@@ -37,14 +34,14 @@ public static class JsonUtilitiesNocab
   public static string printJson(JsonObject jo, bool prettyJson = false)
   {
     string result = jo.ToString(prettyJson);
-    Debug.Log(result);
+    System.Console.WriteLine(result);
     return result;
   }
 
   public static string printErrorJson(JsonObject jo, bool prettyJson = false)
   {
     string result = jo.ToString(prettyJson);
-    Debug.LogError(result);
+    System.Console.WriteLine(result);
     return result;
   }
 

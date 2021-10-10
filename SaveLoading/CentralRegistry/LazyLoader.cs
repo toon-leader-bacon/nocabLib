@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class LazyLoader<T> : INocabNameable
 {
   /**
@@ -48,8 +44,8 @@ public class LazyLoader<T> : INocabNameable
      *  - this.NocabNameUUID is NOT in the CentralRegistry
      *  - The object returned from the CentralRegistry is not of type T
      *
-     * "Happy Path" behavior: Ping the CentralRegistry, get an object, sucesfully
-     * cast it to type T, save that refrence for the future and return it.
+     * "Happy Path" behavior: Ping the CentralRegistry, get an object, successfully
+     * cast it to type T, save that reference for the future and return it.
     **/
     if (this.targetAcquired) { return this.targetObj; }
 
@@ -57,7 +53,7 @@ public class LazyLoader<T> : INocabNameable
     {
       string errorMsg = "LazyLoader attempted to pull an object out of the CentralRegistry. " +
       $"But the target didn't exist! Target NocabNameUUID: \"{NocabNameUUID}\"";
-      Debug.LogError(errorMsg);
+      System.Console.WriteLine(errorMsg);
       throw new System.ArgumentOutOfRangeException(errorMsg);
     }
 
@@ -71,7 +67,7 @@ public class LazyLoader<T> : INocabNameable
      * Internal helper function to safely cast and save results from the CentralRegistry.
     **/
     // Someone could register a null to CentralRegistry. That's valid, but weird...
-    if (obj == null) { this.targetObj = default(T); } // Default of refence types is null
+    if (obj == null) { this.targetObj = default(T); } // Default of defence types is null
     else
     {
       // Else, process the results from the CentralRegistry.
@@ -79,10 +75,10 @@ public class LazyLoader<T> : INocabNameable
       try { this.targetObj = (T)obj; }
       catch (System.InvalidCastException e)
       {
-        string errorMsg = "LazyLoder attempted to cast the result target objcet " +
+        string errorMsg = "LazyLoader attempted to cast the result target object " +
         "(Received from the CentralRegistry) into the target template type. NocabNameUUID: " +
         $"\"{this.NocabNameUUID}\". InvalidCastException: {e.Message}";
-        Debug.LogError(errorMsg);
+      System.Console.WriteLine(errorMsg);
         throw new System.InvalidCastException(errorMsg, e);
       }
     }

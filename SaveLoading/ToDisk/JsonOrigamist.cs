@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using LightJson;
+﻿using LightJson;
 
 public class JsonOrigamist
 {
@@ -37,7 +36,7 @@ public class JsonOrigamist
   public void writeToDisk()
   {
     string jsonStr = toBeFolded.ToString(true);
-    Debug.Log("WriteToDisk: " + jsonStr);
+    System.Console.WriteLine("WriteToDisk: " + jsonStr);
     NocabDiskUtility.WriteStringToFile(this.relativeDirectory, this.fileName, jsonStr);
   }
   #endregion
@@ -47,7 +46,7 @@ public class JsonOrigamist
   public static JsonValue readFromDiskStatic(string relativeDirectory, string fileName)
   {
     string jsonStr = NocabDiskUtility.ReadStringFromFile(relativeDirectory, fileName);
-    Debug.Log("ReadFromDisk: " + jsonStr);
+    System.Console.WriteLine("ReadFromDisk: " + jsonStr);
     return JsonValue.Parse(jsonStr);
   }
 
