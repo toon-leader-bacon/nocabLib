@@ -7,16 +7,24 @@ using LightJson;
 public class NocabRNG : JsonConvertible
 {
 
+  public static NocabRNG newRNG {
+    // Warning: generating a new RNG object is expensive and slow.
+    // Reccomended is to store the returned RNG object and use.
+    get {
+      return new NocabRNG(DateTime.UtcNow);
+    }
+  }
+
   public static NocabRNG defaultRNG {
-    // TODO: Is it a problem that this RNG always is initialized with the same default seed?
-    // TODO: Consider some kind of static ossification? Or easier is use something else as the default seed
-    // TODO: When a game is loaded, the defaultRNG shouldn't reset, should it? I guess it doesn't really matter.
+    // NOTE: The defaultRNG uses the same seed every time. So the order
+    // of generated numbers will not change between program runs.
     get {
       if (defaultRNG_ == null) { defaultRNG_ = new NocabRNG(5489); } // Default seed certified random according to Wikipedia
       return defaultRNG_;
     }
   }
   private static NocabRNG defaultRNG_ = null;
+
 
   private NocabMT myRNG;
 
