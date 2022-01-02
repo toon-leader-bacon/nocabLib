@@ -21,4 +21,25 @@ public static class NocabHashUtility
     return hash;
   }
 
+#region convenience functions
+
+  public static int generateHash(object item1, object item2) {
+    int hash = 23;
+    int prime = 32;
+    hash = (prime * hash) + item1.GetHashCode();
+    hash = (prime * hash) + item2.GetHashCode();
+    return hash;
+  }
+
+  public static int generateHash(object item1, object item2, object item3) {
+    int hash = 23;
+    int prime = 32;
+    hash = (prime * hash) + item1.GetHashCode();
+    hash = (prime * hash) + item2.GetHashCode();
+    hash = (prime * hash) + item3.GetHashCode();
+    return hash;
+  }
+
+#endregion convenience functions
+
 }
