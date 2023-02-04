@@ -19,16 +19,16 @@ public class NocabMT : JsonConvertible
   private const int wordLength = 32;    // number of bits
   private const uint stateLength = 624; // degree of recurrence
   private const uint m = 397; // middle word, an offset used in defining the series X.  1 <= m < n
-  private const uint r = 31;  //seperation  point of one word, # bits of lower bitmask.  0 <= r <= w-1
+  private const uint r = 31;  //separation  point of one word, # bits of lower bitmask.  0 <= r <= w-1
   private const uint a = 2567483615; // Coefficients of the rational normal form twist matrix
 
-  private const int u = 11;         // Tempering bit shift
-                                    //private const uint d = 0xFFFFFFFF; // Un-used for 32 bit generation
-  private const int s = 7;          // Tempering bitshift
+  private const int u = 11;          // Tempering bit shift
+                                     //private const uint d = 0xFFFFFFFF; // Un-used for 32 bit generation
+  private const int s = 7;           // Tempering bitshift
   private const uint b = 0x9D2C5680; // Tempering mask
-  private const int t = 15;         // Tempering bitshift
+  private const int t = 15;          // Tempering bitshift
   private const uint c = 0xEFC60000; // Tempering mask
-  private const int l = 18;         // Tempering bitshift
+  private const int l = 18;          // Tempering bitshift
 
 
   private const uint F32 = 1812433253;

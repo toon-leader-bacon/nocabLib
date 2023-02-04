@@ -14,20 +14,20 @@ public class SimplexNoise : INoise
 	 * Specifically the code in the file simplexnoise1234.cpp
 	 * Relevant documentation from the file below:
 	 * """
-	 * // SimplexNoise1234
-	 * // Copyright © 2003-2011, Stefan Gustavson
-	 * //
-	 * // Contact: stegu@itn.liu.se
-	 * //
-	 * // This library is public domain software, released by the author
-	 * // into the public domain in February 2011. You may do anything
-	 * // you like with it. You may even remove all attributions,
-	 * // but of course I'd appreciate it if you kept my name somewhere.
-	 * //
-	 * // This library is distributed in the hope that it will be useful,
-	 * // but WITHOUT ANY WARRANTY; without even the implied warranty of
-	 * // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	 * // General Public License for more details.
+	 * SimplexNoise1234
+	 * Copyright © 2003-2011, Stefan Gustavson
+	 * 
+	 * Contact: stegu@itn.liu.se
+	 * 
+	 * This library is public domain software, released by the author
+	 * into the public domain in February 2011. You may do anything
+	 * you like with it. You may even remove all attributions,
+	 * but of course I'd appreciate it if you kept my name somewhere.
+	 * 
+	 * This library is distributed in the hope that it will be useful,
+	 * but WITHOUT ANY WARRANTY; without even the implied warranty of
+	 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	 * General Public License for more details.
 	 * 
 	 * This implementation is "Simplex Noise" as presented by
 	 * Ken Perlin at a relatively obscure and not often cited course
@@ -47,7 +47,7 @@ public class SimplexNoise : INoise
   /*
 	 * Note: you SHOULD NOT modify gradientPermutations.
 	 * Normally gradientPermutations would be a read-only field, but b/c SimplexNoise
-	 * is a JsonConvertable implimentor, the this.fromJson(...) needs to modify
+	 * is a JsonConvertable implementor, the this.fromJson(...) needs to modify
 	 * the fields after construction. 
 	 */
   private List<int> gradientPermutations;
@@ -78,7 +78,7 @@ public class SimplexNoise : INoise
     findContribution(downFromCeil, grad(gradientPermutations[ceil & 0xff], downFromCeil), out n1);
 
     // return (n0 + n1) * 0.395f to return in range [-1, 1]
-    // return ((0.395f * (n0 + n1)) + 1) / 2.0f; => [0, 1] range as specificed by INoise
+    // return ((0.395f * (n0 + n1)) + 1) / 2.0f; => [0, 1] range as specified by INoise
     return (0.1975f * (n0 + n1)) + 0.5f;
   }
 
@@ -164,11 +164,11 @@ public class SimplexNoise : INoise
   }
 
 
-  private void findContribution(float x, float gradiant, out float contribution)
+  private void findContribution(float x, float gradient, out float contribution)
   {
     float temp = 1.0f - (x * x);
     temp *= temp;
-    contribution = temp * temp * gradiant;
+    contribution = temp * temp * gradient;
   }
 
   private void findContribution(float x, float y, int gradient, out float contribution)
@@ -183,9 +183,6 @@ public class SimplexNoise : INoise
   }
 
   #endregion
-
-
-
 
   #region Saving/ Loading
 

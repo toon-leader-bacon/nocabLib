@@ -7,7 +7,7 @@ public struct Wiggler
 	 * A utility object that helps to "wiggle" a series of number to make them slightly more
 	 * random.
 	 * Providing the length of the series will ensure that the sum of the number series doesn't
-	 * change. Consier the simple example list of number [5,5,5,5]. The total sum is 20, and
+	 * change. Consider the simple example list of number [5,5,5,5]. The total sum is 20, and
 	 * after wiggling it produces the series [3, 6, 7, 4] the total sum is still 20.
 	 *
 	 * If the provided lengthOfSeries is less than or equal to zero then there is no guarantee
@@ -42,7 +42,7 @@ public struct Wiggler
   public int wiggle(int value, NocabRNG rng)
   {
     /**
-		 * A statefull version of the other wiggle function.
+		 * A stateful version of the other wiggle function.
 		 *
 		 * Wiggles a list of numbers. The sum of the number will not change.
 		 * The maximum change that any one number can have is maxDelta.
