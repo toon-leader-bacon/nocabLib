@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class DropTable<T>
 {
   /**
-   * The DropTable<T> class encapsulates a series of possible options. One option can be  selected
+   * The DropTable<T> class encapsulates a series of possible options. One option can be selected
    * at random from the list of options. Each option in the list has a variable probability of being
    * selected.
    */
