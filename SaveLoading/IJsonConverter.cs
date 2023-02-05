@@ -5,10 +5,10 @@ using System;
 public interface JsonConvertible
 {
   /**
-   * A JsonConvertable object is an object that can convert itself into a JsonObject,
+   * A JsonConvertible object is an object that can convert itself into a JsonObject,
    * and ingest a well-formatted JsonObject and update itself to match.
    *
-   * In other words, the JsonConvertable interface allows objects to save and load themselves.
+   * In other words, the JsonConvertible interface allows objects to save and load themselves.
    *
    * In general, the output of toJson() function should capture 100% of the state stored in
    * the object. The format of the outputted JsonObject from the toJson() function, should be
@@ -17,13 +17,12 @@ public interface JsonConvertible
    */
   // TODO: Separate out the load and save functionality?
 
-
   string myJsonType();  // TODO: Do I really need this? 
 
   JsonObject toJson();
 
   /**
-   * Loads the information in the well-formated JsonObject into the implimenting "this" JsonConvertable
+   * Loads the information in the well-formatted JsonObject into the implementing "this" JsonConvertible
    */
   void loadJson(JsonObject jo);
 }

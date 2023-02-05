@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Runtime.Intrinsics.X86;
+using System.Security.Cryptography;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -46,7 +48,7 @@ public class NocabRNG : JsonConvertible
   public int generateInt(int low, int high, bool lowInclusive = true, bool highInclusive = true) {
     /**
      * Generates a random int within the provided range of [low, high]. The default low and high
-     * values are inclusive in the rang,. meaning they are possible values to be returned.
+     * values are inclusive in the range, meaning they are possible values to be returned.
      *
      * If low == high, then lowInclusive and highInclusive must both be true. Otherwise an error is thrown.
      *
@@ -95,8 +97,11 @@ public class NocabRNG : JsonConvertible
       low = high;
       high = swap;
     }
-    float randomNumber = lowInclusive ? myRNG.extract_number() :
-                                       (myRNG.extract_number() + 0.5f);
+
+    float randomNumber = myRNG.extract_number();
+    if(!lowInclusive && (randomNumber == 0.0f)) {
+      randomNumber = float.Epsilon;
+    }
     float denominator = highInclusive ? NocabMT.UNSIGNED_MAX_POSSIBLE_VALUE : // (2^32) - 1
                                         NocabMT.MAX_POSSIBLE_VALUE_PLUS_ONE;  //  2^32
     return low + ((randomNumber / denominator) * (high - low));
