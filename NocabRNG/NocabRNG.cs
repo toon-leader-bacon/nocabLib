@@ -116,8 +116,12 @@ public class NocabRNG : JsonConvertible
       low = high;
       high = swap;
     }
-    double randomNumber = lowInclusive ? myRNG.extract_number() :
-                                        (myRNG.extract_number() + 0.5d);
+
+    double randomNumber = myRNG.extract_number();
+    if(!lowInclusive && (randomNumber == 0.0d)) {
+      randomNumber = double.Epsilon;
+    }
+
     double denominator = highInclusive ? NocabMT.UNSIGNED_MAX_POSSIBLE_VALUE : // (2^32) - 1
                                          NocabMT.MAX_POSSIBLE_VALUE_PLUS_ONE;  //  2^32
     return low + ((randomNumber / denominator) * (high - low));
