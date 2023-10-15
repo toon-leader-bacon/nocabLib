@@ -1,4 +1,5 @@
 ﻿using LightJson;
+using UnityEditor;
 
 public struct HashablePointInt
 {
@@ -16,6 +17,17 @@ public struct HashablePointInt
         this.y = y;
     }
 
+    public static HashablePointInt operator +(HashablePointInt hp1, HashablePointInt hp2)
+    {
+        return new HashablePointInt(hp1.x + hp2.x, hp1.y + hp2.y);
+    }
+
+    public static HashablePointInt operator -(HashablePointInt hp1, HashablePointInt hp2)
+    {
+        return new HashablePointInt(hp1.x - hp2.x, hp1.y - hp2.y);
+    }
+
+    #region equality and hashes
     public static int CalculateHashCode(int x, int y)
     {
         // Based off the NocabHashUtility.generateHash(...) func
@@ -30,6 +42,43 @@ public struct HashablePointInt
     {
         return CalculateHashCode(this.x, this.y);
     }
+
+    public bool Equals(HashablePointInt other)
+    {
+        return (x == other.x) && (y == other.y);
+    }
+
+    public override bool Equals(object other)
+    {
+        if (other == null || GetType() != other.GetType())
+        {
+            return false;
+        }
+        return Equals((HashablePointInt)other);
+    }
+
+    public static bool operator ==(HashablePointInt hp1, HashablePointInt hp2)
+    {
+        if (ReferenceEquals(hp1, hp2))
+        {
+            return true;
+        }
+        if (ReferenceEquals(hp1, null))
+        {
+            return true;
+        }
+        if (ReferenceEquals(hp2, null))
+        {
+            return true;
+        }
+        return hp1.Equals(hp2);
+    }
+
+    public static bool operator !=(HashablePointInt hp1, HashablePointInt hp2)
+    {
+        return !(hp1 == hp2);
+    }
+    #endregion
 
     #region Saving/ Loading
     /**
