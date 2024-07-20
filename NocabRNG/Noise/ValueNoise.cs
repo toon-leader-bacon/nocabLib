@@ -104,8 +104,8 @@ public class ValueNoise : INoise
   {
     /**
 		 * Extract the psudo random unit float at the given position.
-		 * If the position has not been initilized yet, then generate the
-		 * calue using this.rng.
+		 * If the position has not been initialized yet, then generate the
+		 * value using this.rng.
 		 */
     if (!this.nodes.ContainsKey(point))
     {
