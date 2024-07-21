@@ -95,7 +95,6 @@ public struct Wiggler
       int maxRange = Math.Min(maxDelta, maxDelta - _needle);
       int wiggle = rng.generateInt(minRange, maxRange);
       _needle += wiggle;
-      // Debug.Log($"needle {_needle},  range [{minRange},{maxRange}],  wiggle {wiggle}\n");
       numbers[i] = numbers[i] + wiggle;
     }
     numbers[numbers.Count - 1] += -_needle;

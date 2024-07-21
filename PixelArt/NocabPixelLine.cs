@@ -47,7 +47,7 @@ public static class NocabPixelLine
         return result;
       }
       else
-      { return horizontalLine_right(start.x, end.x, start.x); }
+      { return horizontalLine_right(start.x, end.x, start.y); }
     }
   }
 
