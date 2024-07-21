@@ -1,6 +1,6 @@
-#if UNITY_5_3_OR_NEWER
 using System.Collections.Generic;
-using System.Linq;
+
+#if UNITY_5_3_OR_NEWER
 using UnityEngine;
 #endif
 
@@ -18,7 +18,8 @@ public static class PixelArtShapes
       Vector2Int pointB = points[i];
       List<Vector2Int> connecting_line = NocabPixelLine.getPointsAlongLine(pointA, pointB);
       // Avoid the duplicate point issue by removing the last point.
-      // The next iteration will start at the end point so that one will be included
+      // The next iteration will start at the end point so it (the last point of the line)
+      // will be included
       connecting_line.RemoveAt(connecting_line.Count - 1);
 
       result.AddRange(connecting_line);
