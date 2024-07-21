@@ -1,5 +1,9 @@
 using System;
 
+#if UNITY_5_3_OR_NEWER
+using UnityEngine;
+#endif
+
 public struct Box2D
 {
   public readonly float TopLeft_X;
@@ -33,6 +37,14 @@ public struct Box2D
 
   public static Box2D Box2D_CornerPoints(float x0, float y0, float x1, float y1, bool positiveYDown = true)
   {
+    /**
+     * Provide the two opposite corner points. Typically the top left and bottom right, but 
+     * this also works if you provide the top right and bottom left. The key point is that
+     * the two points are opposite of each other. 
+     *
+     * Put another way, this constructor will return the smallest 2d box that contains the provided
+     * points.
+     */
     float tl_x = Math.Min(x0, x1);
     float tl_y = positiveYDown ? Math.Min(y0, y1) : Math.Max(y0, y1);
     float width = x1 - x0;
@@ -71,12 +83,16 @@ public struct Box2D
     get { return (TopLeft_X, TopLeft_Y); }
   }
   public (float x, float y) TL { get { return TopLeft; } }
+  public Vector2 TL_v { get { return new Vector2(TL.x, TL.y); } }
+
 
   public (float x, float y) TopRight
   {
     get { return (TopLeft_X + TopSideLength, TopLeft_Y); }
   }
   public (float x, float y) TR { get { return TopRight; } }
+  public Vector2 TR_v { get { return new Vector2(TR.x, TR.y); } }
+
 
   public (float x, float y) BottomLeft
   {
@@ -87,6 +103,7 @@ public struct Box2D
     }
   }
   public (float x, float y) BL { get { return BottomLeft; } }
+  public Vector2 BL_v { get { return new Vector2(BL.x, BL.y); } }
 
   public (float x, float y) BottomRight
   {
@@ -97,6 +114,7 @@ public struct Box2D
     }
   }
   public (float x, float y) BR { get { return BottomRight; } }
+  public Vector2 BR_v { get { return new Vector2(BR.x, BR.y); } }
 
   public (float x, float y) Center
   {
@@ -107,6 +125,7 @@ public struct Box2D
       );
     }
   }
+  public Vector2 Center_v { get { return new Vector2(Center.x, Center.y); } }
 
   #endregion
 

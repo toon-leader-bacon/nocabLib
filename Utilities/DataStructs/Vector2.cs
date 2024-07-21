@@ -1,10 +1,10 @@
 #if !UNITY_5_3_OR_NEWER
-public struct Vector2Int
+public struct Vector2
 {
-  public int x;
-  public int y;
+  public float x;
+  public float y;
 
-  public Vector2Int(int x, int y)
+  public Vector2(float x, float y)
   {
     this.x = x;
     this.y = y;
@@ -15,6 +15,5 @@ public struct Vector2Int
     return $"({x}, {y})";
   }
 
-  // Implement other methods and operators as needed
 }
 #endif
