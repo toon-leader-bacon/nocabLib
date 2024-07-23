@@ -1,3 +1,4 @@
+
 using System;
 
 #if UNITY_5_3_OR_NEWER
@@ -6,36 +7,16 @@ using UnityEngine;
 
 public struct Box2D
 {
-  public readonly float TopLeft_X;
-  public readonly float TopLeft_Y;
-  public readonly float Width;
-  public readonly float Height;
-  public readonly int Y_DownSign;
+  public readonly float Left_X;
+  public readonly float Top_Y;
+  public readonly float Right_X;
+  public readonly float Bottom_Y;
+  public readonly bool PositiveYDown;
 
-  public Box2D(float topLeft_x, float topLeft_y, float width, float height, bool positiveYDown = true)
-  {
-    TopLeft_X = topLeft_x;
-    TopLeft_Y = topLeft_y;
-    Width = Math.Abs(width);
-    Height = Math.Abs(height);
-    Y_DownSign = positiveYDown ? 1 : -1;
-  }
+  public float Width { get { return Math.Abs(Right_X - Left_X); } }
+  public float Height { get { return Math.Abs(Bottom_Y - Top_Y); } }
 
-  public static Box2D Box2D_CenterPt(float centerX, float centerY, float width, float height, bool positiveYDown = true)
-  {
-    width = Math.Abs(width);
-    height = Math.Abs(height);
-
-    float topLeft_X = centerX - (width / 2); // Move left half the width
-
-    // Move away from the 'down direction' by half the width
-    int y_DownSign = positiveYDown ? 1 : -1;
-    float topLeft_Y = centerY - (y_DownSign * (height / 2));
-
-    return new Box2D(topLeft_X, topLeft_Y, width, height, positiveYDown);
-  }
-
-  public static Box2D Box2D_CornerPoints(float x0, float y0, float x1, float y1, bool positiveYDown = true)
+  public Box2D(float x0, float y0, float x1, float y1, bool positiveYDown = true)
   {
     /**
      * Provide the two opposite corner points. Typically the top left and bottom right, but 
@@ -46,11 +27,49 @@ public struct Box2D
      * points.
      */
     float tl_x = Math.Min(x0, x1);
-    float tl_y = positiveYDown ? Math.Min(y0, y1) : Math.Max(y0, y1);
-    float width = x1 - x0;
-    float height = Math.Abs(y1 - y0); // May not be needed
-    return new Box2D(tl_x, tl_y, width, height, positiveYDown);
+    float tl_y = positiveYDown ?
+                 // If pos y is down, then the Top Left point is the most negative
+                 Math.Min(y0, y1) :
+                 // Else pos y is up, so the TL is the most positive
+                 Math.Max(y0, y1);
+
+    // Opposite of the Tl point
+    float br_x = Math.Max(x0, x1);
+    float br_y = positiveYDown ?
+                 Math.Max(y0, y1) :
+                 Math.Min(y0, y1);
+
+    this.Left_X = tl_x;
+    this.Top_Y = tl_y;
+    this.Right_X = br_x;
+    this.Bottom_Y = br_y;
+    this.PositiveYDown = positiveYDown;
   }
+
+  public static Box2D Box2D_TL_WithHeight(float topLeft_x, float topLeft_y, float width, float height, bool positiveYDown = true)
+  {
+    width = Math.Abs(width);
+    height = Math.Abs(height);
+
+    float right_x = topLeft_x + width;
+    float Bottom_Y = topLeft_y + (positiveYDown ? height : -height);
+    return new Box2D(topLeft_x, topLeft_y, right_x, Bottom_Y, positiveYDown);
+  }
+
+  public static Box2D Box2D_CenterPt(float centerX, float centerY, float width, float height, bool positiveYDown = true)
+  {
+    width = Math.Abs(width);
+    height = Math.Abs(height);
+
+    float left_x = centerX - (width / 2); // Move left half the width
+
+    // Move away from the 'down direction' by half the width
+    float top_y = centerY - (positiveYDown ? (height / 2) : -(height / 2));
+
+    return Box2D_TL_WithHeight(left_x, top_y, width, height, positiveYDown);
+  }
+
+
 
   #region Side Length
 
@@ -80,7 +99,7 @@ public struct Box2D
 
   public (float x, float y) TopLeft
   {
-    get { return (TopLeft_X, TopLeft_Y); }
+    get { return (Left_X, Top_Y); }
   }
   public (float x, float y) TL { get { return TopLeft; } }
   public Vector2 TL_v { get { return new Vector2(TL.x, TL.y); } }
@@ -88,7 +107,7 @@ public struct Box2D
 
   public (float x, float y) TopRight
   {
-    get { return (TopLeft_X + TopSideLength, TopLeft_Y); }
+    get { return (Right_X, Top_Y); }
   }
   public (float x, float y) TR { get { return TopRight; } }
   public Vector2 TR_v { get { return new Vector2(TR.x, TR.y); } }
@@ -96,11 +115,7 @@ public struct Box2D
 
   public (float x, float y) BottomLeft
   {
-    get
-    {
-      return (TopLeft_X,
-              TopLeft_Y + (Y_DownSign * Height)); // Move down height
-    }
+    get { return (Left_X, Bottom_Y); }
   }
   public (float x, float y) BL { get { return BottomLeft; } }
   public Vector2 BL_v { get { return new Vector2(BL.x, BL.y); } }
@@ -108,10 +123,7 @@ public struct Box2D
   public (float x, float y) BottomRight
   {
     get
-    {
-      return (TopLeft_X + BottomSideLength,
-              TopLeft_Y + (Y_DownSign * Height)); // Move down height
-    }
+    { return (Right_X, Bottom_Y); }
   }
   public (float x, float y) BR { get { return BottomRight; } }
   public Vector2 BR_v { get { return new Vector2(BR.x, BR.y); } }
@@ -120,62 +132,57 @@ public struct Box2D
   {
     get
     {
-      return (TopLeft_X + Width / 2,
-              TopLeft_Y + (Y_DownSign * (Height / 2)) // Move down 1/2 height
-      );
+      return ((Left_X + Right_X) / 2, (
+               Top_Y + Bottom_Y) / 2);
     }
   }
   public Vector2 Center_v { get { return new Vector2(Center.x, Center.y); } }
 
   #endregion
 
+  bool yInRange(float y)
+  {
+    // If pos Y is down, then the largest value is at the bottom.
+    // Otherwise, the large value is at the top
+    (float large_y, float small_y) = PositiveYDown ?
+                                     (Bottom_Y, Top_Y) :
+                                     (Top_Y, Bottom_Y);
+    return small_y <= y && y <= large_y;
+  }
+
+  bool xInRange(float x)
+  {
+    // Left x will always be smaller than right x
+    return Left_X <= x && x <= Right_X;
+  }
+
   public bool Contains(float x, float y)
   {
-    bool in_x_range = TopLeft_X <= x && x <= TopLeft_X + Width;
-    if (!in_x_range)
-    {
-      return false;
-    }
+    return xInRange(x) && yInRange(y);
+  }
 
-    if (Y_DownSign == 1)
-    {
-      /*
-      TL_Y = -10
-      Target_Y = 2
-      BR_Y = 4
-            -
-            |  *  -10
-            |
-            |
-       -----+-----
-            |  X    2
-            |
-            |  *    4
-            +
+  public bool IsOnEdge(Vector2Int pt)
+  {
+    return IsOnLeftEdge(pt) || IsOnRightEdge(pt) || IsOnTopEdge(pt) || IsOnBottomEdge(pt);
+  }
 
-      -10 <= 2 <= 4   In range
-      */
-      return TopLeft_Y <= y && y <= TopLeft_Y + Height;
-    }
-    else
-    {
-      /*
-      TL_Y = 10
-      Target_Y = -2
-      BR_Y = -4
-            +
-            |  *  10
-            |
-            |
-       -----+-----
-            |  X  -2
-            |
-            |  *  -4
-            -
+  public bool IsOnLeftEdge(Vector2Int pt)
+  {
+    return pt.x == Left_X && yInRange(pt.y);
+  }
 
-      10 >= -2 >= -4    In range
-      */
-      return TopLeft_Y >= y && y >= TopLeft_Y + Height;
-    }
+  public bool IsOnRightEdge(Vector2Int pt)
+  {
+    return pt.x == Right_X && yInRange(pt.y);
+  }
+
+  public bool IsOnTopEdge(Vector2Int pt)
+  {
+    return pt.y == Top_Y && xInRange(pt.x);
+  }
+
+  public bool IsOnBottomEdge(Vector2Int pt)
+  {
+    return pt.y == Bottom_Y && xInRange(pt.x);
   }
 }
