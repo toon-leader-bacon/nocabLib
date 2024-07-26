@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Configuration.Assemblies;
 using System.Runtime.CompilerServices;
 
 public static class NocabHashUtility
@@ -133,6 +134,36 @@ public static class NocabHashUtility
     hash = internalHash_a(hash, (uint)item3.GetHashCode());
     return unchecked((int)finalHash(hash));
   }
+
+  #region booleans
+
+  public static int hashBools(bool a, bool b, bool c, bool d)
+  {
+
+    int hash = a ? 1 : 0;
+    hash = (hash << 1) | (b ? 1 : 0);
+    hash = (hash << 1) | (c ? 1 : 0);
+    hash = (hash << 1) | (d ? 1 : 0);
+    return hash;
+
+  }
+
+  public static int hashBools(List<bool> bools)
+  {
+    if (bools.Count >= 32)
+    {
+      return generateHash(bools);
+    }
+
+    int hash = 0;
+    foreach (bool b in bools)
+    {
+      hash = (hash << 1) | (b ? 1 : 0);
+    }
+    return hash;
+  }
+
+  #endregion
 
   #endregion convenience functions
 

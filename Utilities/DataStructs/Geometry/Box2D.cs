@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 #endif
 
-public struct Box2D
+public readonly struct Box2D
 {
   public readonly float Left_X;
   public readonly float Top_Y;
@@ -80,7 +80,7 @@ public struct Box2D
 
   public float BottomSideLength
   {
-    get { return TopSideLength; }
+    get { return Width; }
   }
 
   public float LeftSideLength
@@ -90,7 +90,7 @@ public struct Box2D
 
   public float RightSideLength
   {
-    get { return LeftSideLength; }
+    get { return Height; }
   }
 
   #endregion
