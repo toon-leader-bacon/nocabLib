@@ -11,7 +11,6 @@
  */
 public static class CentralRegistry
 {
-
   private static Dictionary<string, object> centralDictionary = new Dictionary<string, object>();
 
   public static bool containsNocabName(string targetNocabName)
@@ -33,8 +32,9 @@ public static class CentralRegistry
      */
     if (containsNocabName(newObjNocabName))
     {
-      string errMsg = "CentralRegistry is trying to register an object but it's " +
-        $"NocabName has already been registered!: Name: {newObjNocabName}";
+      string errMsg =
+        "CentralRegistry is trying to register an object but it's "
+        + $"NocabName has already been registered!: Name: {newObjNocabName}";
       System.Console.WriteLine(errMsg);
       return false;
     }
@@ -55,8 +55,9 @@ public static class CentralRegistry
      */
     if (!containsNocabName(targetNocabName))
     {
-      string errMsg = "CentralRegistry is trying to De-Register an object, but it's " +
-        $"NocabName is not registered! Name: {targetNocabName}";
+      string errMsg =
+        "CentralRegistry is trying to De-Register an object, but it's "
+        + $"NocabName is not registered! Name: {targetNocabName}";
       System.Console.WriteLine(errMsg);
       return false;
     }
@@ -65,8 +66,10 @@ public static class CentralRegistry
 
   public static object getObject(string nocabName)
   {
-    if (!containsNocabName(nocabName)) { return null; }
+    if (!containsNocabName(nocabName))
+    {
+      return null;
+    }
     return centralDictionary[nocabName];
   }
-
 }

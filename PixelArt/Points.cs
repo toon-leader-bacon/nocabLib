@@ -4,7 +4,6 @@ public interface IPoint<T>
   T getY();
 }
 
-
 public class PointInt : IPoint<int>
 {
   public PointInt(int x, int y)
@@ -12,15 +11,25 @@ public class PointInt : IPoint<int>
     this.X = x;
     this.Y = y;
   }
+
   public PointInt(PointInt other)
   {
     this.X = other.X;
     this.Y = other.Y;
   }
+
   public int X { get; set; }
   public int Y { get; set; }
-  public int getX() { return X; }
-  public int getY() { return Y; }
+
+  public int getX()
+  {
+    return X;
+  }
+
+  public int getY()
+  {
+    return Y;
+  }
 }
 
 public class PointDouble : IPoint<double>
@@ -39,8 +48,16 @@ public class PointDouble : IPoint<double>
     this.X = other.X;
     this.Y = other.Y;
   }
-  public double getX() { return X; }
-  public double getY() { return Y; }
+
+  public double getX()
+  {
+    return X;
+  }
+
+  public double getY()
+  {
+    return Y;
+  }
 }
 
 public class PointLong : IPoint<long>
@@ -59,7 +76,14 @@ public class PointLong : IPoint<long>
     this.X = other.X;
     this.Y = other.Y;
   }
-  public long getX() { return X; }
-  public long getY() { return Y; }
-}
 
+  public long getX()
+  {
+    return X;
+  }
+
+  public long getY()
+  {
+    return Y;
+  }
+}

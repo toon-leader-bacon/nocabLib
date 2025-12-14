@@ -1,13 +1,11 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
-
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
 #endif
 
 public static class NocabPixelLine
 {
-
   public static List<Vector2Int> getPointsAlongLine(Vector2Int start, Vector2Int end)
   {
     // flat lines (IE lines with a 0 or inf slope)
@@ -34,7 +32,9 @@ public static class NocabPixelLine
         return result;
       }
       else
-      { return verticalLine_up(start.y, end.y, start.x); }
+      {
+        return verticalLine_up(start.y, end.y, start.x);
+      }
     }
     else // start.y == end.y
     {
@@ -47,7 +47,9 @@ public static class NocabPixelLine
         return result;
       }
       else
-      { return horizontalLine_right(start.x, end.x, start.y); }
+      {
+        return horizontalLine_right(start.x, end.x, start.y);
+      }
     }
   }
 
@@ -64,7 +66,9 @@ public static class NocabPixelLine
         return result;
       }
       else
-      { return PlotLineLow(start, end); }
+      {
+        return PlotLineLow(start, end);
+      }
     }
     else
     {
@@ -75,7 +79,9 @@ public static class NocabPixelLine
         return result;
       }
       else
-      { return PlotLineHigh(start, end); }
+      {
+        return PlotLineHigh(start, end);
+      }
     }
   }
 
@@ -102,7 +108,7 @@ public static class NocabPixelLine
     {
       result.Add(new Vector2Int(current_x, current_y));
 
-      // Check to see if the error has built up enough to move 
+      // Check to see if the error has built up enough to move
       // in the y direction
       if (error > 0)
       {
@@ -111,8 +117,8 @@ public static class NocabPixelLine
       }
       else
       {
-        // Else not enough error build up. Say on the same y 
-        // level but increase the error. 
+        // Else not enough error build up. Say on the same y
+        // level but increase the error.
         error += 2 * dy;
       }
     }
@@ -142,7 +148,7 @@ public static class NocabPixelLine
     {
       result.Add(new Vector2Int(current_x, current_y));
 
-      // Check to see if the error has built up enough to move 
+      // Check to see if the error has built up enough to move
       // in the x direction
       if (error > 0)
       {
@@ -151,8 +157,8 @@ public static class NocabPixelLine
       }
       else
       {
-        // Else not enough error build up. Say on the same x 
-        // level but increase the error. 
+        // Else not enough error build up. Say on the same x
+        // level but increase the error.
         error += 2 * dx;
       }
     }
@@ -191,5 +197,4 @@ public static class NocabPixelLine
     }
     return result;
   }
-
 }

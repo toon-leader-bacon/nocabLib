@@ -1,57 +1,56 @@
 ﻿using System;
-using LightJson;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using LightJson;
 
 public class SimplexNoise : INoise
 {
   /**
-	 * A Simplex Noise generator based off the example found here:
-	 * http://staffwww.itn.liu.se/~stegu/aqsis/aqsis-newnoise/?C=D;O=A
-	 * (Related link: http://staffwww.itn.liu.se/~stegu/simplexnoise/simplexnoise.pdf)
-	 * 
-	 * Specifically the code in the file simplexnoise1234.cpp
-	 * Relevant documentation from the file below:
-	 * """
-	 * SimplexNoise1234
-	 * Copyright © 2003-2011, Stefan Gustavson
-	 * 
-	 * Contact: stegu@itn.liu.se
-	 * 
-	 * This library is public domain software, released by the author
-	 * into the public domain in February 2011. You may do anything
-	 * you like with it. You may even remove all attributions,
-	 * but of course I'd appreciate it if you kept my name somewhere.
-	 * 
-	 * This library is distributed in the hope that it will be useful,
-	 * but WITHOUT ANY WARRANTY; without even the implied warranty of
-	 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	 * General Public License for more details.
-	 * 
-	 * This implementation is "Simplex Noise" as presented by
-	 * Ken Perlin at a relatively obscure and not often cited course
-	 * session "Real-Time Shading" at Siggraph 2001 (before real
-	 * time shading actually took on), under the title "hardware noise".
-	 * The 3D function is numerically equivalent to his Java reference
-	 * code available in the PDF course notes, although I re-implemented
-	 * it from scratch to get more readable code. The 1D, 2D and 4D cases
-	 * were implemented from scratch by me from Ken Perlin's text.
-	 * 
-	 * """ </end> Gustavson's documentation
-	 */
+   * A Simplex Noise generator based off the example found here:
+   * http://staffwww.itn.liu.se/~stegu/aqsis/aqsis-newnoise/?C=D;O=A
+   * (Related link: http://staffwww.itn.liu.se/~stegu/simplexnoise/simplexnoise.pdf)
+   *
+   * Specifically the code in the file simplexnoise1234.cpp
+   * Relevant documentation from the file below:
+   * """
+   * SimplexNoise1234
+   * Copyright © 2003-2011, Stefan Gustavson
+   *
+   * Contact: stegu@itn.liu.se
+   *
+   * This library is public domain software, released by the author
+   * into the public domain in February 2011. You may do anything
+   * you like with it. You may even remove all attributions,
+   * but of course I'd appreciate it if you kept my name somewhere.
+   *
+   * This library is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   * General Public License for more details.
+   *
+   * This implementation is "Simplex Noise" as presented by
+   * Ken Perlin at a relatively obscure and not often cited course
+   * session "Real-Time Shading" at Siggraph 2001 (before real
+   * time shading actually took on), under the title "hardware noise".
+   * The 3D function is numerically equivalent to his Java reference
+   * code available in the PDF course notes, although I re-implemented
+   * it from scratch to get more readable code. The 1D, 2D and 4D cases
+   * were implemented from scratch by me from Ken Perlin's text.
+   *
+   * """ </end> Gustavson's documentation
+   */
 
   private const float SkewConstant2d = 0.366025403f; // 0.5*(sqrt(3.0)-1.0)
   private const float UnskewConstant2d = 0.211324865f; // (3.0-Math.sqrt(3.0))/6.0
 
   /*
-	 * Note: you SHOULD NOT modify gradientPermutations.
-	 * Normally gradientPermutations would be a read-only field, but b/c SimplexNoise
-	 * is a JsonConvertable implementor, the this.fromJson(...) needs to modify
-	 * the fields after construction. 
-	 */
+   * Note: you SHOULD NOT modify gradientPermutations.
+   * Normally gradientPermutations would be a read-only field, but b/c SimplexNoise
+   * is a JsonConvertable implementor, the this.fromJson(...) needs to modify
+   * the fields after construction.
+   */
   private List<int> gradientPermutations;
-
 
   public SimplexNoise(NocabRNG rng)
   {
@@ -65,15 +64,16 @@ public class SimplexNoise : INoise
   public float noise(float xin)
   {
     /**
-		 * A 1D noise generator that produces values in the range [0, 1]
-		 */
+     * A 1D noise generator that produces values in the range [0, 1]
+     */
 
     int floor = (int)Math.Floor(xin);
     int ceil = floor + 1;
     float upFromFloor = xin - floor;
     float downFromCeil = upFromFloor - 1.0f;
 
-    float n0, n1; // Noise contributions from each node
+    float n0,
+      n1; // Noise contributions from each node
     findContribution(upFromFloor, grad(gradientPermutations[floor & 0xff], upFromFloor), out n0);
     findContribution(downFromCeil, grad(gradientPermutations[ceil & 0xff], downFromCeil), out n1);
 
@@ -85,8 +85,8 @@ public class SimplexNoise : INoise
   public float noise(float xin, float yin)
   {
     /**
-		 * A 2D noise generator that produces values in the range [0, 1]
-		 */
+     * A 2D noise generator that produces values in the range [0, 1]
+     */
 
     // Find target simplex cell via skewing input coords
     float skew = (xin + yin) * SkewConstant2d;
@@ -101,7 +101,8 @@ public class SimplexNoise : INoise
     float y0 = yin - (targetTriangleJ - unskew);
 
     // Find target Simplex triangle
-    int i1, j1;  // offsets for middle corner of simplex triangle cell
+    int i1,
+      j1; // offsets for middle corner of simplex triangle cell
     if (x0 > y0)
     {
       // lower triangle, XY order: (0,0) -> (1,0) -> (1,1)
@@ -130,7 +131,9 @@ public class SimplexNoise : INoise
     int i = targetTriangleI % 256;
     int j = targetTriangleJ % 256;
 
-    float n0, n1, n2; // Noise contributions from 3 corners
+    float n0,
+      n1,
+      n2; // Noise contributions from 3 corners
     findContribution(x0, y0, gradientPermutations[i + gradientPermutations[j]], out n0);
     findContribution(x1, y1, gradientPermutations[i + i1 + gradientPermutations[j + j1]], out n1);
     findContribution(x2, y2, gradientPermutations[i + 1 + gradientPermutations[j + 1]], out n2);
@@ -140,29 +143,33 @@ public class SimplexNoise : INoise
     return (20.0f * (n0 + n1 + n2)) + 0.5f;
   }
 
-  public float noise(Vector2 point) { return noise(point.X, point.Y); }
-
+  public float noise(Vector2 point)
+  {
+    return noise(point.X, point.Y);
+  }
 
   #region Utility/ Helper functions
 
   private float grad(int hash, float x)
   {
     int h = hash & 15;
-    float grad = 1.0f + (h & 7);        // Gradient value 1.0, 2.0, ..., 8.0
-    if ((h & 8) != 0) { grad = -grad; } // Set a random sign for the gradient
-    return (grad * x);                  // Multiply the gradient with the distance
+    float grad = 1.0f + (h & 7); // Gradient value 1.0, 2.0, ..., 8.0
+    if ((h & 8) != 0)
+    {
+      grad = -grad;
+    } // Set a random sign for the gradient
+    return (grad * x); // Multiply the gradient with the distance
   }
 
   private float grad(int hash, float x, float y)
   {
-    int h = hash & 7;         // Convert low 3 bits of hash code
-    float u = h < 4 ? x : y;  // into 8 simple gradient directions,
-    float v = h < 4 ? y : x;  // and compute the dot product with (x,y).
+    int h = hash & 7; // Convert low 3 bits of hash code
+    float u = h < 4 ? x : y; // into 8 simple gradient directions,
+    float v = h < 4 ? y : x; // and compute the dot product with (x,y).
     float left = (h & 1) != 0 ? -u : u;
     float right = (h & 2) != 0 ? -2.0f * v : 2.0f * v;
     return left + right;
   }
-
 
   private void findContribution(float x, float gradient, out float contribution)
   {
@@ -174,7 +181,8 @@ public class SimplexNoise : INoise
   private void findContribution(float x, float y, int gradient, out float contribution)
   {
     float temp = 0.5f - (x * x) - (y * y);
-    if (temp < 0.0f) contribution = 0.0f;
+    if (temp < 0.0f)
+      contribution = 0.0f;
     else
     {
       temp *= temp;
@@ -186,15 +194,21 @@ public class SimplexNoise : INoise
 
   #region Saving/ Loading
 
-  public const string JsonType = "SimplexNoise";  // Version 1.0
+  public const string JsonType = "SimplexNoise"; // Version 1.0
 
-  public string myJsonType() { return JsonType; }
+  public string myJsonType()
+  {
+    return JsonType;
+  }
 
   public JsonObject toJson()
   {
     JsonObject result = JsonUtilitiesNocab.initJson(JsonType);
     JsonArray gpAsJson = new JsonArray();
-    foreach (int val in gradientPermutations) { gpAsJson.Add(val); }
+    foreach (int val in gradientPermutations)
+    {
+      gpAsJson.Add(val);
+    }
     result["gradientPermutations"] = gpAsJson;
     return result;
   }
@@ -203,7 +217,10 @@ public class SimplexNoise : INoise
   {
     JsonUtilitiesNocab.assertValidJson(jo, JsonType);
     this.gradientPermutations = new List<int>();
-    foreach (int val in jo["gradientPermutations"].AsJsonArray) { this.gradientPermutations.Add(val); }
+    foreach (int val in jo["gradientPermutations"].AsJsonArray)
+    {
+      this.gradientPermutations.Add(val);
+    }
   }
 
   #endregion

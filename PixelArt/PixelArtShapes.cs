@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
 #endif
@@ -8,8 +7,14 @@ public static class PixelArtShapes
 {
   public static List<Vector2Int> ConnectTheDots(List<Vector2Int> points)
   {
-    if (points.Count == 0) { return new List<Vector2Int>(); }
-    if (points.Count == 1) { return points; }
+    if (points.Count == 0)
+    {
+      return new List<Vector2Int>();
+    }
+    if (points.Count == 1)
+    {
+      return points;
+    }
 
     List<Vector2Int> result = new List<Vector2Int>();
     Vector2Int pointA = points[0];
@@ -30,5 +35,4 @@ public static class PixelArtShapes
 
     return result;
   }
-
 }

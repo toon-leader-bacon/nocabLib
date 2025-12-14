@@ -26,7 +26,6 @@ public class DropTable<T>
     this.totalSum = calculateSum(options);
   }
 
-
   #region Pull element
 
   public T PullElement()
@@ -44,7 +43,10 @@ public class DropTable<T>
     {
       float percentChance = kvp.Key;
       f -= percentChance;
-      if (f < 0) { return kvp.Value; }
+      if (f < 0)
+      {
+        return kvp.Value;
+      }
     }
     int randomIndex = rng.randomIndex(this.options.Count);
     return this.options[randomIndex].Value;
@@ -58,7 +60,8 @@ public class DropTable<T>
   {
     // Calculate the sum of all the keys in the provided list
     float result = 0.0f;
-    foreach (KeyValuePair<float, T> option in options) {
+    foreach (KeyValuePair<float, T> option in options)
+    {
       result += MathF.Abs(option.Key);
     }
     return result;

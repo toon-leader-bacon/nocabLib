@@ -47,12 +47,16 @@ public class LazyLoader<T> : INocabNameable
      * "Happy Path" behavior: Ping the CentralRegistry, get an object, successfully
      * cast it to type T, save that reference for the future and return it.
     **/
-    if (this.targetAcquired) { return this.targetObj; }
+    if (this.targetAcquired)
+    {
+      return this.targetObj;
+    }
 
     if (!isTargetRegistered())
     {
-      string errorMsg = "LazyLoader attempted to pull an object out of the CentralRegistry. " +
-      $"But the target didn't exist! Target NocabNameUUID: \"{NocabNameUUID}\"";
+      string errorMsg =
+        "LazyLoader attempted to pull an object out of the CentralRegistry. "
+        + $"But the target didn't exist! Target NocabNameUUID: \"{NocabNameUUID}\"";
       System.Console.WriteLine(errorMsg);
       throw new System.ArgumentOutOfRangeException(errorMsg);
     }
@@ -67,18 +71,25 @@ public class LazyLoader<T> : INocabNameable
      * Internal helper function to safely cast and save results from the CentralRegistry.
     **/
     // Someone could register a null to CentralRegistry. That's valid, but weird...
-    if (obj == null) { this.targetObj = default(T); } // Default of defence types is null
+    if (obj == null)
+    {
+      this.targetObj = default(T);
+    } // Default of defence types is null
     else
     {
       // Else, process the results from the CentralRegistry.
       // Ensure it's the target type T.
-      try { this.targetObj = (T)obj; }
+      try
+      {
+        this.targetObj = (T)obj;
+      }
       catch (System.InvalidCastException e)
       {
-        string errorMsg = "LazyLoader attempted to cast the result target object " +
-        "(Received from the CentralRegistry) into the target template type. NocabNameUUID: " +
-        $"\"{this.NocabNameUUID}\". InvalidCastException: {e.Message}";
-      System.Console.WriteLine(errorMsg);
+        string errorMsg =
+          "LazyLoader attempted to cast the result target object "
+          + "(Received from the CentralRegistry) into the target template type. NocabNameUUID: "
+          + $"\"{this.NocabNameUUID}\". InvalidCastException: {e.Message}";
+        System.Console.WriteLine(errorMsg);
         throw new System.InvalidCastException(errorMsg, e);
       }
     }
@@ -96,11 +107,11 @@ public class LazyLoader<T> : INocabNameable
   {
     if (!CentralRegistry.tryDeregister(NocabNameUUID))
     {
-      string error = "Attempted to de-register a NocabNameable from the " +
-        $"Central Registry, but it failed. Attempted to use this name as UUID: {NocabNameUUID}";
+      string error =
+        "Attempted to de-register a NocabNameable from the "
+        + $"Central Registry, but it failed. Attempted to use this name as UUID: {NocabNameUUID}";
       throw new System.ArgumentOutOfRangeException(error);
     }
     return true;
   }
-
 }

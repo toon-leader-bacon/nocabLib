@@ -29,12 +29,10 @@
    * See NocabNameable.deregister() and LazyLoader.deregister() for example.
    */
   bool deregister();
-
 }
 
 public class NocabNameable : INocabNameable
 {
-
   private readonly string NocabName;
 
   public NocabNameable(object objectToRegister)
@@ -53,8 +51,9 @@ public class NocabNameable : INocabNameable
   {
     if (!CentralRegistry.tryRegister(NocabName, objToRegister))
     {
-      string error = "Attempted to register a NocabNameable to the " +
-        $"CentralRegistry, but it failed. Attempted to use this name as UUID: {NocabName}";
+      string error =
+        "Attempted to register a NocabNameable to the "
+        + $"CentralRegistry, but it failed. Attempted to use this name as UUID: {NocabName}";
       throw new System.ArgumentOutOfRangeException(error);
     }
     return true;
@@ -64,13 +63,16 @@ public class NocabNameable : INocabNameable
   {
     if (!CentralRegistry.tryDeregister(NocabName))
     {
-      string error = "Attempted to de-register a NocabNameable from the " +
-        $"Central Registry, but it failed. Attempted to use this name as UUID: {NocabName}";
+      string error =
+        "Attempted to de-register a NocabNameable from the "
+        + $"Central Registry, but it failed. Attempted to use this name as UUID: {NocabName}";
       throw new System.ArgumentOutOfRangeException(error);
     }
     return true;
   }
 
-  public string getNocabName() { return this.NocabName; }
-
+  public string getNocabName()
+  {
+    return this.NocabName;
+  }
 }
