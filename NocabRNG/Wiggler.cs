@@ -4,8 +4,8 @@ using System.Collections.Generic;
 public struct Wiggler
 {
   /**
-   * A utility object that helps to "wiggle" a series of number to make them slightly more
-   * random.
+   * A utility object that helps to "wiggle" a series of number to make them slightly
+   * higher entropy.
    * Providing the length of the series will ensure that the sum of the number series doesn't
    * change. Consider the simple example list of number [5,5,5,5]. The total sum is 20, and
    * after wiggling it produces the series [3, 6, 7, 4] the total sum is still 20.
