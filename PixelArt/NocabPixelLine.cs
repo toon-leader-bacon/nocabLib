@@ -6,6 +6,14 @@ using UnityEngine;
 
 public static class NocabPixelLine
 {
+  public static List<Vector2Int> getPointsAlongLine(Vector2 start, Vector2 end)
+  {
+    // Round every float to the nearest integer
+    Vector2Int startInt = new((int)math.round(start.x), (int)math.round(start.y));
+    Vector2Int endInt = new((int)math.round(end.x), (int)math.round(end.y));
+    return getPointsAlongLine(startInt, endInt);
+  }
+
   public static List<Vector2Int> getPointsAlongLine(Vector2Int start, Vector2Int end)
   {
     // flat lines (IE lines with a 0 or inf slope)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
 #endif
@@ -217,4 +218,89 @@ public readonly struct Box2D
   {
     return pt.y == Bottom_Y && xInRange(pt.x);
   }
+
+  public HashSet<Vector2Int> GetAllEdgePoints()
+  {
+    HashSet<Vector2Int> resultPoints = new();
+    resultPoints.UnionWith(NocabPixelLine.getPointsAlongLine(TL_v, TR_v));
+    resultPoints.UnionWith(NocabPixelLine.getPointsAlongLine(TR_v, BR_v));
+    resultPoints.UnionWith(NocabPixelLine.getPointsAlongLine(BR_v, BL_v));
+    resultPoints.UnionWith(NocabPixelLine.getPointsAlongLine(BL_v, TL_v));
+    return resultPoints;
+  }
+
+  #region Edge Relationship Checks
+
+  /// <summary>
+  /// Returns true if this box and other share any edge segment (edges are coincident and overlapping).
+  /// This checks if one box's left/right edge aligns with the other's right/left edge (with overlapping y),
+  /// or if top/bottom edges align (with overlapping x).
+  /// Note: Returns true even if boxes also overlap in their interiors.
+  /// </summary>
+  public bool SharesEdge(Box2D other)
+  {
+    // Check vertical edges: this.left == other.right or this.right == other.left
+    if (this.Left_X == other.Right_X && YRangesOverlap(other))
+      return true;
+    if (this.Right_X == other.Left_X && YRangesOverlap(other))
+      return true;
+
+    // Check horizontal edges: this.top == other.bottom or this.bottom == other.top
+    if (this.Top_Y == other.Bottom_Y && XRangesOverlap(other))
+      return true;
+    if (this.Bottom_Y == other.Top_Y && XRangesOverlap(other))
+      return true;
+
+    return false;
+  }
+
+  /// <summary>
+  /// Returns true if this box's edge is exactly airGapSize tiles away from other's edge (parallel and adjacent),
+  /// but the boxes do NOT overlap or share an edge. This is the problematic "double wall" case.
+  /// The airgap size of 0 means the edges are exactly adjacent. An airgap size of 1 means the edges have
+  /// one tile of space between them, etc.
+  /// </summary>
+  public bool IsEdgeTouching(Box2D other, int airGapSize = 0)
+  {
+    airGapSize = Math.Abs(airGapSize) + 1; // Add 1 because, otherwise, this is just the SharesEdge check above.
+    // Check if vertical edges are exactly 1 unit apart with overlapping Y ranges
+    // (this.right is 1 left of other.left, or other.right is 1 left of this.left)
+    bool verticalTouching =
+      (this.Right_X + airGapSize == other.Left_X || other.Right_X + airGapSize == this.Left_X)
+      && YRangesOverlap(other);
+
+    if (verticalTouching)
+      return true;
+
+    // Check if horizontal edges are exactly 1 unit apart with overlapping X ranges
+    // Normalize Y coordinates since Top_Y/Bottom_Y meaning depends on PositiveYDown
+    float thisYMax = Math.Max(this.Top_Y, this.Bottom_Y);
+    float thisYMin = Math.Min(this.Top_Y, this.Bottom_Y);
+    float otherYMax = Math.Max(other.Top_Y, other.Bottom_Y);
+    float otherYMin = Math.Min(other.Top_Y, other.Bottom_Y);
+
+    bool horizontalTouching =
+      (thisYMax + airGapSize == otherYMin || otherYMax + airGapSize == thisYMin)
+      && XRangesOverlap(other);
+
+    return horizontalTouching;
+  }
+
+  public bool YRangesOverlap(Box2D other)
+  {
+    // Normalize y ranges (handles both PositiveYDown true/false)
+    float thisYMin = Math.Min(this.Top_Y, this.Bottom_Y);
+    float thisYMax = Math.Max(this.Top_Y, this.Bottom_Y);
+    float otherYMin = Math.Min(other.Top_Y, other.Bottom_Y);
+    float otherYMax = Math.Max(other.Top_Y, other.Bottom_Y);
+    return thisYMax >= otherYMin && otherYMax >= thisYMin;
+  }
+
+  public bool XRangesOverlap(Box2D other)
+  {
+    // Left_X <= Right_X is guaranteed by constructor
+    return this.Right_X >= other.Left_X && other.Right_X >= this.Left_X;
+  }
+
+  #endregion
 }

@@ -9,9 +9,9 @@ public static class NocabHashUtility
    * main C# library.
    * I've picked (slightly) better variable names, and taken some creative
    * liberties with certain order of operations and other simplifications.
-   * 
+   *
    * For any serious use of hash codes, please consider using that library directly
-   * instead. 
+   * instead.
    * https://github.com/dotnet/runtime/blob/5535e31a712343a63f5d7d796cd874e563e5ac14/src/libraries/System.Private.CoreLib/src/System/HashCode.cs
    */
 
@@ -28,15 +28,16 @@ public static class NocabHashUtility
     bool hash_a = true;
     foreach (object obj in definingElements)
     {
-      hash = hash_a ?
-        internalHash_a(hash, (uint)obj.GetHashCode()) :
-        internalHash_b(hash, (uint)obj.GetHashCode());
+      hash = hash_a
+        ? internalHash_a(hash, (uint)obj.GetHashCode())
+        : internalHash_b(hash, (uint)obj.GetHashCode());
       hash_a = !hash_a;
     }
     return unchecked((int)finalHash(hash));
   }
 
-  public static int generateHash<T>(ICollection<T> definingElements) where T : struct
+  public static int generateHash<T>(ICollection<T> definingElements)
+    where T : struct
   {
     /**
      * Used for when you need a hash value from a bunch of primitive types.
@@ -46,9 +47,9 @@ public static class NocabHashUtility
     bool hash_a = true;
     foreach (object obj in definingElements)
     {
-      hash = hash_a ?
-        internalHash_a(hash, (uint)obj.GetHashCode()) :
-        internalHash_b(hash, (uint)obj.GetHashCode());
+      hash = hash_a
+        ? internalHash_a(hash, (uint)obj.GetHashCode())
+        : internalHash_b(hash, (uint)obj.GetHashCode());
       hash_a = !hash_a;
     }
     return unchecked((int)finalHash(hash));
@@ -96,7 +97,7 @@ public static class NocabHashUtility
     n %= 32; // Note: I think this check is un unnecessary
 
     uint n_first_bits = value >> (32 - n); // Grab the left most n bits
-    // Bitshift the initial value left n bits, then 'add' (bitwise or) the 
+    // Bitshift the initial value left n bits, then 'add' (bitwise or) the
     // top n bits onto the vacated n bits at the right end.
     return (value << n) | n_first_bits;
   }
@@ -139,13 +140,11 @@ public static class NocabHashUtility
 
   public static int hashBools(bool a, bool b, bool c, bool d)
   {
-
     int hash = a ? 1 : 0;
     hash = (hash << 1) | (b ? 1 : 0);
     hash = (hash << 1) | (c ? 1 : 0);
     hash = (hash << 1) | (d ? 1 : 0);
     return hash;
-
   }
 
   public static int hashBools(List<bool> bools)
@@ -166,5 +165,4 @@ public static class NocabHashUtility
   #endregion
 
   #endregion convenience functions
-
 }
